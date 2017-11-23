@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+    <h:head>
+        <title>БД документів конструкторського відділу</title>
+    </h:head>
+    <h:body>
+        <h:panelGroup id="main">
+            <!--Блок утентифікації користувача системи-->
+            <p:panel header="Аутентифікація користувача" rendered="#{not userBean.login}">
+                <h:form>
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <p:outputLabel value="Логін"/>
+                        <p:inputText value="#{userBean.loginUser.login}"/>
+                        <p:outputLabel value="Пароль"/>
+                        <p:password value="#{userBean.loginUser.password}"/>
+                    </h:panelGrid>
+                    <p:commandButton value="Submit" action="#{userBean.doLogin}" update="main"/>
+                </h:form>
+            </p:panel>
+
+            <p:panel header="Доброго дня адмін!" rendered="#{userBean.admin}">
+                <h:outputText value="Hello, #{userBean.workingUser.name} #{userBean.workingUser.surname}"/>
+                <h:form><p:commandButton value="Вихід" action="#{userBean.exit}" update="main"/></h:form>
+                <br/>
+                <h:form>
+                    <p:dataTable value="#{userBean.allUsers}" var="user" selectionMode="single" selection="#{userBean.tmpUser}" rowKey="#{user.id}" paginator="true" rows="10">
+                        <p:column headerText="Ідентифікаційний номер">
+                            <h:outputText value="#{user.id}"/>
+                        </p:column>
+                        <p:column headerText="Логін">
+                            <h:outputText value="#{user.login}"/>
+                        </p:column>
+                        <p:column headerText="Пароль">
+                            <h:outputText value="#{user.password}"/>
+                        </p:column>
+                        <p:column headerText="Ім'я">
+                            <h:outputText value="#{user.name}"/>
+                        </p:column>
+                        <p:column headerText="Прізвище">
+                            <h:outputText value="#{user.surname}"/>
+                        </p:column>
+                        <p:column headerText="Позиція">
+                            <h:outputText value="#{user.position}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <p:panelGrid columns="2" cellpadding="5">
+                        <p:commandButton value="Корегувати" actionListener="#{userBean.startEdit}" update="main"/>
+                        <p:commandButton value="Видалити" actionListener="#{userBean.deleteUser}" update="main"/>
+                    </p:panelGrid>
+                </h:form>
+                <p:panel header="Дані для нового користувача" rendered="#{not userBean.editMode}">
+                    <h:form>
+                        <p:panelGrid columns="2">
+                            <h:outputLabel value="Ідентифікаційний номер" for="userID"/>
+                            <h:inputText value="#{userBean.tmpUser.id}" id="userID"/>
+                            <h:outputLabel value="Логін" for="userLogin"/>
+                            <h:inputText value="#{userBean.tmpUser.login}" id="userLogin"/>
+                            <h:outputLabel value="Пароль" for="userPassword"/>
+                            <h:inputText value="#{userBean.tmpUser.password}" id="userPassword"/>
+                            <h:outputLabel value="Ім'я" for="userName"/>
+                            <h:inputText value="#{userBean.tmpUser.name}" id="userName"/>
+                            <h:outputLabel value="Прізвище" for="userSurname"/>
+                            <h:inputText value="#{userBean.tmpUser.surname}" id="userSurname"/>
+                            <h:selectOneListbox value="#{userBean.tmpUser.position}" id="userPosition" size="1">
+                                <f:selectItem itemValue="admin" itemLabel="Адміністартор"/>
+                                <f:selectItem itemValue="boss" itemLabel="Начальник відділу"/>
+                                <f:selectItem itemValue="engineer" itemLabel="Інженер-конструктор"/>
+                            </h:selectOneListbox>
+                        </p:panelGrid>
+                        <p:commandButton value="Додати користувача" action="#{userBean.addUser}"/>
+                    </h:form>
+                </p:panel>
+                <p:panel header="Редагування користувача" rendered="#{userBean.editMode}">
+                    <h:form>
+                        <p:panelGrid columns="2">
+                            <h:outputLabel value="Логін" for="editUserLogin"/>
+                            <h:inputText value="#{userBean.tmpUser.login}" id="editUserLogin"/>
+                            <h:outputLabel value="Пароль" for="editUserPassword"/>
+                            <h:inputText value="#{userBean.tmpUser.password}" id="editUserPassword"/>
+                            <h:outputLabel value="Ім'я" for="editUserName"/>
+                            <h:inputText value="#{userBean.tmpUser.name}" id="editUserName"/>
+                            <h:outputLabel value="Прізвище" for="editUserSurname"/>
+                            <h:inputText value="#{userBean.tmpUser.surname}" id="editUserSurname"/>
+                            <h:selectOneListbox value="#{userBean.tmpUser.position}" id="editUserPosition" size="1">
+                                <f:selectItem itemValue="admin" itemLabel="Адміністартор"/>
+                                <f:selectItem itemValue="boss" itemLabel="Начальник відділу"/>
+                                <f:selectItem itemValue="engineer" itemLabel="Інженер-конструктор"/>
+                            </h:selectOneListbox>
+                        </p:panelGrid>
+                        <p:commandButton value="Зберегти зміни" action="#{userBean.updateUser}" update="main"/>
+                    </h:form>
+                </p:panel>
+            </p:panel>
+            <p:panel header="БД документів конструкторського відділу" rendered="#{userBean.engineer}">
+                <h:outputText value="Hello, #{userBean.workingUser.name} #{userBean.workingUser.surname}"/>
+                <p:panelGrid columns="2" cellpadding="5">
+
+                </p:panelGrid>
+                <br/>
+                <p:dataTable value="#{documentBean.allDocument}" var="document">
+                    <p:column headerText="Ідентифікаційний номер">
+                        <h:outputText value="#{document.id}"/>
+                    </p:column>
+                    <p:column headerText="Номер документа">
+                        <h:outputText value="#{document.number}"/>
+                    </p:column>
+                    <p:column headerText="Тип документа">
+                        <h:outputText value="#{document.type}"/>
+                    </p:column>
+                    <p:column headerText="Дата випуску документа">
+                        <h:outputText value="#{document.date}"/>
+                    </p:column>
+                    <p:column headerText="Автор документа">
+                        <h:outputText value="#{document.author}"/>
+                    </p:column>
+                    <p:column headerText="Відділ автора">
+                        <h:outputText value="#{document.department}"/>
+                    </p:column>
+                    <p:column headerText="Номер документа">
+                        <h:outputText value="#{document.number}"/>
+                    </p:column>
+                    <p:column headerText="Тема документа">
+                        <h:outputText value="#{document.theme}"/>
+                    </p:column>
+                    <p:column headerText="Статус документа (Вхідний/Вихідний)">
+                        <h:outputText value="#{document.status}"/>
+                    </p:column>
+                    <p:column headerText="Шифр теми до якої відноситься">
+                        <h:outputText value="#{document.code}"/>
+                    </p:column>
+                    <p:column headerText="Місяць">
+                        <h:outputText value="#{document.month}"/>
+                    </p:column>
+                    <p:column headerText="Рік">
+                        <h:outputText value="#{document.year}"/>
+                    </p:column>
+                </p:dataTable>
+                <p:panelGrid columns="4" cellpadding="5">
+                    <p:commandButton value="Корегувати"/>
+                    <p:commandButton value="Видалити"/>
+                    <p:commandButton value="Зберегти"/>
+                </p:panelGrid>
+                <p:panel header="Данні нового документу">
+                    <p:panelGrid columns="2">
+                        <h:outputLabel value="Ідентифікаційний номер" for="documentID"/>
+                        <h:inputText value="#{documentBean.tmpDocument.id}" id="documentID"/>
+                        <h:outputLabel value="Логін" for="userLogin"/>
+                        <h:inputText value="#{documentBean.tmpDocument.number}" id="documentNumber"/>
+                        <h:outputLabel value="Пароль" for="userPassword"/>
+                        <h:selectOneListbox value="#{documentBean.tmpDocument.type}" id="documentType" size="1">
+                            <f:selectItem itemValue="note" itemLabel="Службова записка"/>
+                            <f:selectItem itemValue="telefax message" itemLabel="факс повідомлення"/>
+                            <f:selectItem itemValue="official letter" itemLabel="Офіціальний лист"/>
+                            <f:selectItem itemValue="percept" itemLabel="Распоряждення"/>
+                            <f:selectItem itemValue="order" itemLabel="Приказ"/>
+                            <f:selectItem itemValue="munutes" itemLabel="Протокол"/>
+                            <f:selectItem itemValue="testing report" itemLabel="Протокол випробування"/>
+                        </h:selectOneListbox>
+                        <h:inputText value="#{documentBean.tmpDocument.date}" id="documentDate"/>
+                        <h:outputLabel value="Дата випуску документа" for="documentDate"/>
+                        <h:inputText value="#{documentBean.tmpDocument.author}" id="documentAuthor"/>
+                        <h:outputLabel value="Автор документа" for="documentAuthor"/>
+                        <h:inputText value="#{documentBean.tmpDocument.department}" id="documentDepartment"/>
+                        <h:outputLabel value="Відділ автора документа" for="documentDepartment"/>
+                        <h:inputText value="#{documentBean.tmpDocument.theme}" id="documentTheme"/>
+                        <h:outputLabel value="Тема документа (стисло)" for="documentTheme"/>
+                        <h:selectOneListbox value="#{documentBean.tmpDocument.status}" id="documentStatus" size="1">
+                            <f:selectItem itemValue="in" itemLabel="Вхідний"/>
+                            <f:selectItem itemValue="out" itemLabel="Вихідний"/>
+                        </h:selectOneListbox>
+                        <h:inputText value="#{documentBean.tmpDocument.code}" id="documentCode"/>
+                        <h:outputLabel value="Шифр теми до якого відноситься документ" for="documentCode"/>
+                        <h:inputText value="#{documentBean.tmpDocument.month}" id="documentMonth"/>
+                        <h:outputLabel value="Місяць" for="documentMonth"/>
+                        <h:inputText value="#{documentBean.tmpDocument.year}" id="documentYear"/>
+                        <h:outputLabel value="Місяць" for="documentYear"/>
+                    </p:panelGrid>
+                    <p:commandButton value="Додати документ" action="#{userBean.addUser}"/>
+                    <h:outputText value="Hello, #{userBean.workingUser.name} #{userBean.workingUser.surname}"/>
+                    <h:form><p:commandButton value="Вихід" action="#{userBean.exit}" update="main"/></h:form>
+                    <br/>
+                </p:panel>
+            </p:panel>
+        </h:panelGroup>
+    </h:body>
+</f:view>
+</html>
