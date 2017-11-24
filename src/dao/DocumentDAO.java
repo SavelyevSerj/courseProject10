@@ -34,9 +34,7 @@ public class DocumentDAO {
      * @return Document
      */
     public Document add(Document document) {
-        em.getTransaction().begin();
         Document documentFromDB = em.merge(document);
-        em.getTransaction().commit();
         return documentFromDB;
     }
 
@@ -45,9 +43,7 @@ public class DocumentDAO {
      * @param id
      */
     public void delete(int id) {
-        em.getTransaction().begin();
         em.remove(get(id));
-        em.getTransaction().commit();
     }
 
     /**
@@ -55,8 +51,6 @@ public class DocumentDAO {
      * @param document
      */
     public void update(Document document) {
-        em.getTransaction().begin();
         em.merge(document);
-        em.getTransaction().commit();
     }
 }

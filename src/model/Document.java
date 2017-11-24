@@ -88,6 +88,25 @@ public class Document {
     @Column(length = 20)
     private Integer year;
 
+    //Constructor
+
+    public Document(String number, String type, Date date, String author, String department, String destination, String theme, String status, String code, Integer month, Integer year) {
+        this.number = number;
+        this.type = type;
+        this.date = date;
+        this.author = author;
+        this.department = department;
+        this.destination = destination;
+        this.theme = theme;
+        this.status = status;
+        this.code = code;
+        this.month = month;
+        this.year = year;
+    }
+
+    public Document() {
+    }
+
     //getters and setters
 
 

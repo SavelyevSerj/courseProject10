@@ -153,12 +153,8 @@ public class UserBean implements Serializable {
      * додає нового користувача системи у БД
      */
     public void addUser() {
-        if (tmpUser.getName() != null && !tmpUser.getName().isEmpty())
-        {
-            userDAO.add(tmpUser);
-            tmpUser = new User();
-        }
-        userDAO.findAll();
+       userDAO.add(tmpUser);
+       tmpUser = new User();
     }
 
     /**
@@ -172,8 +168,8 @@ public class UserBean implements Serializable {
     public void updateUser(User tmpUser) {
         //TODO Обновить информацию про юзера в БД
         userDAO.update(tmpUser.getId());
-        editMode = false;
         tmpUser = new User();
+        editMode = false;
     }
 
     public void startEdit(int id, String newLogin, String newPassword, String newName, String newSurname, String newPosition) {

@@ -12,6 +12,7 @@
     </h:head>
     <h:body>
         <h:panelGroup id="main">
+
             <!--Блок утентифікації користувача системи-->
             <p:panel header="Аутентифікація користувача" rendered="#{not userBean.login}">
                 <h:form>
@@ -24,13 +25,16 @@
                     <p:commandButton value="Submit" action="#{userBean.doLogin}" update="main"/>
                 </h:form>
             </p:panel>
+            <!--Блок утентифікації користувача системи-->
 
+            <!--Блок для адміністратора-->
             <p:panel header="Доброго дня адмін!" rendered="#{userBean.admin}">
                 <h:outputText value="Hello, #{userBean.workingUser.name} #{userBean.workingUser.surname}"/>
                 <h:form><p:commandButton value="Вихід" action="#{userBean.exit}" update="main"/></h:form>
                 <br/>
                 <h:form>
-                    <p:dataTable value="#{userBean.allUsers}" var="user" selectionMode="single" selection="#{userBean.tmpUser}" rowKey="#{user.id}" paginator="true" rows="10">
+                    <p:dataTable value="#{userBean.allUsers}" var="user" selectionMode="single"
+                                 selection="#{userBean.tmpUser}" rowKey="#{user.id}" paginator="true" rows="10">
                         <p:column headerText="Ідентифікаційний номер">
                             <h:outputText value="#{user.id}"/>
                         </p:column>
@@ -98,66 +102,69 @@
                     </h:form>
                 </p:panel>
             </p:panel>
+            <!--Блок для адміністратора-->
+
+            <!--Блок інженера-->
             <p:panel header="БД документів конструкторського відділу" rendered="#{userBean.engineer}">
                 <h:outputText value="Hello, #{userBean.workingUser.name} #{userBean.workingUser.surname}"/>
-                <p:panelGrid columns="2" cellpadding="5">
-
-                </p:panelGrid>
+                <h:form><p:commandButton value="Вихід" action="#{userBean.exit}" update="main"/></h:form>
                 <br/>
-                <p:dataTable value="#{documentBean.allDocument}" var="document">
-                    <p:column headerText="Ідентифікаційний номер">
-                        <h:outputText value="#{document.id}"/>
-                    </p:column>
-                    <p:column headerText="Номер документа">
-                        <h:outputText value="#{document.number}"/>
-                    </p:column>
-                    <p:column headerText="Тип документа">
-                        <h:outputText value="#{document.type}"/>
-                    </p:column>
-                    <p:column headerText="Дата випуску документа">
-                        <h:outputText value="#{document.date}"/>
-                    </p:column>
-                    <p:column headerText="Автор документа">
-                        <h:outputText value="#{document.author}"/>
-                    </p:column>
-                    <p:column headerText="Відділ автора">
-                        <h:outputText value="#{document.department}"/>
-                    </p:column>
-                    <p:column headerText="Номер документа">
-                        <h:outputText value="#{document.number}"/>
-                    </p:column>
-                    <p:column headerText="Тема документа">
-                        <h:outputText value="#{document.theme}"/>
-                    </p:column>
-                    <p:column headerText="Статус документа (Вхідний/Вихідний)">
-                        <h:outputText value="#{document.status}"/>
-                    </p:column>
-                    <p:column headerText="Шифр теми до якої відноситься">
-                        <h:outputText value="#{document.code}"/>
-                    </p:column>
-                    <p:column headerText="Місяць">
-                        <h:outputText value="#{document.month}"/>
-                    </p:column>
-                    <p:column headerText="Рік">
-                        <h:outputText value="#{document.year}"/>
-                    </p:column>
-                </p:dataTable>
-                <p:panelGrid columns="4" cellpadding="5">
-                    <p:commandButton value="Корегувати"/>
-                    <p:commandButton value="Видалити"/>
-                    <p:commandButton value="Зберегти"/>
-                </p:panelGrid>
-                <p:panel header="Данні нового документу">
+                <h:form>
+                    <p:dataTable value="#{documentBean.allDocument}" var="document" selectionMode="single"
+                                 selection="#{documentBean.tmpDocument}" rowKey="#{document.id}" paginator="true" rows="10">
+                        <p:column headerText="Ідент. номер">
+                            <h:outputText value="#{document.id}"/>
+                        </p:column>
+                        <p:column headerText="Номер документа">
+                            <h:outputText value="#{document.number}"/>
+                        </p:column>
+                        <p:column headerText="Тип документа">
+                            <h:outputText value="#{document.type}"/>
+                        </p:column>
+                        <p:column headerText="Дата випуску документа">
+                            <h:outputText value="#{document.date}"/>
+                        </p:column>
+                        <p:column headerText="Автор документа">
+                            <h:outputText value="#{document.author}"/>
+                        </p:column>
+                        <p:column headerText="Відділ автора">
+                            <h:outputText value="#{document.department}"/>
+                        </p:column>
+                        <p:column headerText="Номер документа">
+                            <h:outputText value="#{document.number}"/>
+                        </p:column>
+                        <p:column headerText="Тема документа">
+                            <h:outputText value="#{document.theme}"/>
+                        </p:column>
+                        <p:column headerText="Статус документа (Вхідний/Вихідний)">
+                            <h:outputText value="#{document.status}"/>
+                        </p:column>
+                        <p:column headerText="Шифр теми до якої відноситься">
+                            <h:outputText value="#{document.code}"/>
+                        </p:column>
+                        <p:column headerText="Місяць">
+                            <h:outputText value="#{document.month}"/>
+                        </p:column>
+                        <p:column headerText="Рік">
+                            <h:outputText value="#{document.year}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <p:panelGrid columns="4" cellpadding="5">
+                        <p:commandButton value="Корегувати" action="#{documentBean.startEdit}"/>
+                        <p:commandButton value="Видалити" action="#{documentBean.deleteDocument}"/>
+                    </p:panelGrid>
+                </h:form>
+                <p:panel header="Дані для нового документу" rendered="#{not documentBean.editMode}">
                     <p:panelGrid columns="2">
                         <h:outputLabel value="Ідентифікаційний номер" for="documentID"/>
                         <h:inputText value="#{documentBean.tmpDocument.id}" id="documentID"/>
-                        <h:outputLabel value="Логін" for="userLogin"/>
+                        <h:outputLabel value="Номер" for="documentNumber"/>
                         <h:inputText value="#{documentBean.tmpDocument.number}" id="documentNumber"/>
-                        <h:outputLabel value="Пароль" for="userPassword"/>
+                        <h:outputLabel value="Тип документа" for="documentType"/>
                         <h:selectOneListbox value="#{documentBean.tmpDocument.type}" id="documentType" size="1">
                             <f:selectItem itemValue="note" itemLabel="Службова записка"/>
                             <f:selectItem itemValue="telefax message" itemLabel="факс повідомлення"/>
-                            <f:selectItem itemValue="official letter" itemLabel="Офіціальний лист"/>
+                            <f:selectItem itemValue="official letter" itemLabel="Офіційний лист"/>
                             <f:selectItem itemValue="percept" itemLabel="Распоряждення"/>
                             <f:selectItem itemValue="order" itemLabel="Приказ"/>
                             <f:selectItem itemValue="munutes" itemLabel="Протокол"/>
@@ -182,12 +189,49 @@
                         <h:inputText value="#{documentBean.tmpDocument.year}" id="documentYear"/>
                         <h:outputLabel value="Місяць" for="documentYear"/>
                     </p:panelGrid>
-                    <p:commandButton value="Додати документ" action="#{userBean.addUser}"/>
-                    <h:outputText value="Hello, #{userBean.workingUser.name} #{userBean.workingUser.surname}"/>
-                    <h:form><p:commandButton value="Вихід" action="#{userBean.exit}" update="main"/></h:form>
-                    <br/>
+                    <p:commandButton value="Додати документ" action="#{documentBean.addDocument}"/>
+                </p:panel>
+                <p:panel header="Редагування документу" rendered="#{documentBean.editMode}">
+                    <h:form>
+                        <p:panelGrid columns="2">
+                            <h:outputLabel value="Номер документа" for="editDocumentNumber"/>
+                            <h:inputText value="#{documentBean.tmpDocument.number}" id="editDocumentNumber"/>
+                            <h:outputLabel value="Тип документа" for="editDocumentType"/>
+                            <h:selectOneListbox value="#{documentBean.tmpDocument.type}" id="editDocumentType" size="1">
+                                <f:selectItem itemValue="note" itemLabel="Службова записка"/>
+                                <f:selectItem itemValue="telefax message" itemLabel="факс повідомлення"/>
+                                <f:selectItem itemValue="official letter" itemLabel="Офіційний лист"/>
+                                <f:selectItem itemValue="percept" itemLabel="Распоряждення"/>
+                                <f:selectItem itemValue="order" itemLabel="Приказ"/>
+                                <f:selectItem itemValue="munutes" itemLabel="Протокол"/>
+                                <f:selectItem itemValue="testing report" itemLabel="Протокол випробування"/>
+                            </h:selectOneListbox>
+                            <p:outputLabel for="editDocumentDate" value="Дата регістації" />
+                            <p:calendar id="button" value="#{documentBean.tmpDocument.date}" showOn="button" />
+                            <h:outputLabel value="Автор" for="editDocumentAuthor"/>
+                            <h:inputText value="#{documentBean.tmpDocument.author}" id="editDocumentAuthor"/>
+                            <h:outputLabel value="Відділ (автора)" for="editDocumentDepartment"/>
+                            <h:inputText value="#{documentBean.tmpDocument.department}" id="editDocumentDepartment"/>
+                            <h:outputLabel value="Тема" for="editDocumentTheme"/>
+                            <h:inputText value="#{documentBean.tmpDocument.theme}" id="editDocumentTheme"/>
+                            <h:outputLabel value="Статус документа" for="editDocumentStatus"/>
+                            <h:selectOneListbox value="#{documentBean.tmpDocument.status}" id="editDocumentStatus" size="1">
+                                <f:selectItem itemValue="inlet" itemLabel="Вхідний"/>
+                                <f:selectItem itemValue="outlet" itemLabel="Вихідний"/>
+                            </h:selectOneListbox>
+                            <h:outputLabel value="Шифр теми" for="editDocumentCode"/>
+                            <h:inputText value="#{documentBean.tmpDocument.code}" id="editDocumentCode"/>
+                            <h:outputLabel value="Місяць" for="editDocumentMonth"/>
+                            <h:inputText value="#{documentBean.tmpDocument.month}" id="editDocumentMonth"/>
+                            <h:outputLabel value="Рік" for="editDocumentYear"/>
+                            <h:inputText value="#{documentBean.tmpDocument.year}" id="editDocumentYear"/>
+                        </p:panelGrid>
+                        <p:commandButton value="Зберегти зміни" action="#{documentBean.updateDocument}" update="main"/>
+                    </h:form>
                 </p:panel>
             </p:panel>
+            <!--Блок інженера-->
+
         </h:panelGroup>
     </h:body>
 </f:view>
