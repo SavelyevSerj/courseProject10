@@ -134,4 +134,26 @@ public class User {
         result = 31 * result + (position != null ? position.hashCode() : 0);
         return result;
     }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Item U;
+
+    public Item getU() {
+        return U;
+    }
+
+    public void setU(Item u) {
+        U = u;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private Document I;
+
+    public Document getI() {
+        return I;
+    }
+
+    public void setI(Document i) {
+        I = i;
+    }
 }

@@ -1,6 +1,7 @@
 package model;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -271,5 +272,16 @@ public class Document {
         result = 31 * result + (month != null ? month.hashCode() : 0);
         result = 31 * result + (year != null ? year.hashCode() : 0);
         return result;
+    }
+
+    @OneToMany(mappedBy = "I")
+    private Collection<User> D;
+
+    public Collection<User> getD() {
+        return D;
+    }
+
+    public void setD(Collection<User> d) {
+        D = d;
     }
 }
