@@ -1,60 +1,89 @@
 package model;
 
 import javax.persistence.*;
-import java.util.Collection;
 
 /**
- * Created by BigBadVoodooDaddy on 26.11.2017.
+ * Created by BigBadVoodooDaddy on 28.11.2017.
  */
 @Entity
 @NamedQueries({
-
+        @NamedQuery(name = "Item.FindAll", query = "select i from Item i")
 })
 public class Item {
 
-    // поля
+    // Поля
 
     /**
-     * Ідинтифікаційний номер
+     * ідинтифікаційний номер
      */
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private int id;
+    private Integer id;
 
     /**
-     * порядковий номер пункту
+     * порядковий номер пункту плану
      */
-    private int number;
+    @Column(length = 30)
+    private String number;
 
+    /**
+     * шифр теми, до якої відноситься пункт плану
+     */
     @Column(length = 40)
     private String code;
 
-    @Column(length = 200)
+    /**
+     * стислий опис робіт, які будуть виконані
+     */
+    @Column(length = 40)
     private String description;
 
+    /**
+     * користувач, який відповідає за виконання пункту плану
+     */
     @Column(length = 40)
     private String respUser;
 
-    @Column(length = 30)
+    /**
+     * готовність робіт до кінця місяця у процентах
+     */
+    @Column(length = 40)
     private String complPercentage;
 
-    @Column(length = 40)
+    /**
+     * ознака того, що робота виконана
+     */
+    @Column(length = 200)
     private String result;
 
+    /**
+     * примітка відносно ходу виконання робіт
+     */
     @Column(length = 200)
     private String notice;
 
+    //getters and setters
 
-    // getters and setters
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+
 
     @Basic
-    public Integer getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(Integer number) {
+    public void setNumber(String number) {
         this.number = number;
     }
+
 
 
     @Basic
@@ -67,6 +96,7 @@ public class Item {
     }
 
 
+
     @Basic
     public String getDescription() {
         return description;
@@ -75,6 +105,7 @@ public class Item {
     public void setDescription(String description) {
         this.description = description;
     }
+
 
 
     @Basic
@@ -87,6 +118,7 @@ public class Item {
     }
 
 
+
     @Basic
     public String getComplPercentage() {
         return complPercentage;
@@ -95,6 +127,7 @@ public class Item {
     public void setComplPercentage(String complPercentage) {
         this.complPercentage = complPercentage;
     }
+
 
 
     @Basic
@@ -107,6 +140,7 @@ public class Item {
     }
 
 
+
     @Basic
     public String getNotice() {
         return notice;
@@ -116,26 +150,34 @@ public class Item {
         this.notice = notice;
     }
 
-    public String getId() {
-        return id;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Item item = (Item) o;
+
+        if (id != null ? !id.equals(item.id) : item.id != null) return false;
+        if (number != null ? !number.equals(item.number) : item.number != null) return false;
+        if (code != null ? !code.equals(item.code) : item.code != null) return false;
+        if (description != null ? !description.equals(item.description) : item.description != null) return false;
+        if (respUser != null ? !respUser.equals(item.respUser) : item.respUser != null) return false;
+        if (complPercentage != null ? !complPercentage.equals(item.complPercentage) : item.complPercentage != null)
+            return false;
+        if (result != null ? !result.equals(item.result) : item.result != null) return false;
+        return notice != null ? notice.equals(item.notice) : item.notice == null;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    @Override
+    public int hashCode() {
+        int result1 = id != null ? id.hashCode() : 0;
+        result1 = 31 * result1 + (number != null ? number.hashCode() : 0);
+        result1 = 31 * result1 + (code != null ? code.hashCode() : 0);
+        result1 = 31 * result1 + (description != null ? description.hashCode() : 0);
+        result1 = 31 * result1 + (respUser != null ? respUser.hashCode() : 0);
+        result1 = 31 * result1 + (complPercentage != null ? complPercentage.hashCode() : 0);
+        result1 = 31 * result1 + (result != null ? result.hashCode() : 0);
+        result1 = 31 * result1 + (notice != null ? notice.hashCode() : 0);
+        return result1;
     }
-
-    private Collection<User> I;
-
-    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "U")
-    public Collection<User> getI() {
-        return I;
-    }
-
-    public void setI(Collection<User> i) {
-        I = i;
-    }
-
-    private String id;
-
-
 }

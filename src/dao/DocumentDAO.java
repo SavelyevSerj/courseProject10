@@ -5,6 +5,7 @@ import model.Document;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -52,5 +53,35 @@ public class DocumentDAO {
      */
     public void update(Document document) {
         em.merge(document);
+    }
+
+    /**
+     * забезпечує корегування даних про документ
+     * @param id
+     * @param newNumber
+     * @param newType
+     * @param newDate
+     * @param newAuthor
+     * @param newDepartment
+     * @param newTheme
+     * @param newStatus
+     * @param newCode
+     * @param newMonth
+     * @param newYear
+     * @return Document
+     */
+    public Document edit(int id, String newNumber, String newType, Date newDate, String newAuthor, String newDepartment, String newTheme, String newStatus, String newCode, Integer newMonth, Integer newYear) {
+       Document document = this.get(id);
+       document.setNumber(newNumber);
+       document.setType(newType);
+       document.setDate(newDate);
+       document.setAuthor(newAuthor);
+       document.setDepartment(newDepartment);
+       document.setTheme(newTheme);
+       document.setStatus(newStatus);
+       document.setCode(newCode);
+       document.setMonth(newMonth);
+       document.setYear(newYear);
+       return document;
     }
 }

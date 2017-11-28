@@ -9,9 +9,6 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * Created by BigBadVoodooDaddy on 19.11.2017.
- */
 @Named
 @SessionScoped
 public class UserBean implements Serializable {
@@ -165,13 +162,26 @@ public class UserBean implements Serializable {
         tmpUser = new User();
     }
 
+    /**
+     * поновлює дані про користувача
+     * @param tmpUser
+     */
+
     public void updateUser(User tmpUser) {
         //TODO Обновить информацию про юзера в БД
         userDAO.update(tmpUser.getId());
-        tmpUser = new User();
         editMode = false;
     }
 
+    /**
+     * корегування даних користувача
+     * @param id
+     * @param newLogin
+     * @param newPassword
+     * @param newName
+     * @param newSurname
+     * @param newPosition
+     */
     public void startEdit(int id, String newLogin, String newPassword, String newName, String newSurname, String newPosition) {
         editMode = true;
         userDAO.edit(id, newLogin, newPassword, newName, newSurname, newPosition);

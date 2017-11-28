@@ -7,9 +7,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-/**
- * Created by BigBadVoodooDaddy on 19.11.2017.
- */
 @Stateless
 public class UserDAO {
     @PersistenceContext
@@ -72,6 +69,16 @@ public class UserDAO {
         em.merge(get(id));
     }
 
+    /**
+     * забезпечує корегування даних користувача
+     * @param id
+     * @param newLogin
+     * @param newPassword
+     * @param newName
+     * @param newSurname
+     * @param newPosition
+     * @return User
+     */
     public User edit(int id, String newLogin, String newPassword, String newName, String newSurname, String newPosition) {
         User user = this.get(id);
         user.setLogin(newLogin);

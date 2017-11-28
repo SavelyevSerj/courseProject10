@@ -43,6 +43,8 @@ public class DocumentBean implements Serializable{
 //        this.date = date;
 //    }
 
+    //getters and setters
+
     public boolean isEditMode() {
         return editMode;
     }
@@ -75,13 +77,27 @@ public class DocumentBean implements Serializable{
        return documentDAO.findAll();
     }
 
-    public void addDocument() {}
+    /**
+     * додає новий документ
+     */
+    public void addDocument() {
+        documentDAO.add(tmpDocument);
+        tmpDocument = new Document();
+    }
 
-    public void deleteDocument() {}
 
-    public void updateDocument() {}
+    public void deleteDocument() {
+        documentDAO.delete(tmpDocument.getId());
+        tmpDocument = new Document();
+    }
 
-    public void startEdit() {
+    public void updateDocument(Document tmpDocument) {
+        documentDAO.update(tmpDocument);
+        editMode = false;
+    }
+
+    public void startEdit(int id, String newNumber, String newType, Date newdDate, String newAuthor, String newDeprtment, String newTheme, String newStatus, String newCode, Integer newMonth, Integer newYear) {
         editMode = true;
+        documentDAO.edit(id, newNumber, newType, newdDate, newAuthor, newDeprtment, newTheme, newStatus, newCode, newMonth, newYear);
     }
 }
